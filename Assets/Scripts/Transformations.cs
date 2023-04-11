@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Point
+{
+    P1,
+    P2,
+    P3,
+    P4
+}
+
 public class Transformations : MonoBehaviour
 {
     public struct Coordinate

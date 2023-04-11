@@ -9,14 +9,6 @@ public enum CombinedTransformation
     RotateAroundPoint
 }
 
-public enum Point
-{
-    P1,
-    P2,
-    P3,
-    P4
-}
-
 public class SquareObject : Transformations
 {
     private Mesh mesh;
