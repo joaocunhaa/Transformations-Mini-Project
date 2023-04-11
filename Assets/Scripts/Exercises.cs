@@ -45,7 +45,7 @@ public class Exercises : Transformations
 
         // Create a new material that uses a green color
         Material material = new Material(Shader.Find("Standard"));
-        material.color = Color.green;
+        material.color = Color.yellow;
 
         // Assign the material to the Mesh object
         meshRenderer.material = material;

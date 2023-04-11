@@ -52,6 +52,9 @@ public class Transformations : MonoBehaviour
                 s += matrix[r, z] * point[z];
             result[r] = s;
         }
+        // Keeping on the same plane.
+        // Without it, z would always become zero as the matrix has only 2 dimensions.
+        result.z = point.z;
         return result;
     }
 

@@ -115,7 +115,8 @@ public class TriangleMesh : Transformations
         for (int i = 0; i < vertices.Length; i++)
         {
             vertices[i] = new Vector3(vertices[i].x + tx,
-                                      vertices[i].y + ty);
+                                      vertices[i].y + ty,
+                                      vertices[i].z);
         }
         mesh.vertices = vertices;
     }
@@ -125,8 +126,9 @@ public class TriangleMesh : Transformations
         for (int i = 0; i < vertices.Length; i++)
         {
             vertices[i] = new Vector3(vertices[i].x * sx,
-                                      vertices[i].y * sy);
-        }
+                                      vertices[i].y * sy,
+                                      vertices[i].z);
+    }
         mesh.vertices = vertices;
     }
 
@@ -134,7 +136,7 @@ public class TriangleMesh : Transformations
     {
         float[,] mat = new float[2, 2];
         mat[0, 0] = sx; mat[0, 1] = 0;
-        mat[1, 0] = 0; mat[1, 1] = sy;
+        mat[1, 0] = 0;  mat[1, 1] = sy;
         for (int i = 0; i < vertices.Length; i++)
         {
             vertices[i] = multiply(mat, vertices[i]);
