@@ -113,14 +113,14 @@ public class SquareObject : Transformations
     void RotateScale(float angle, float sx, float sy)
     {
         float[,] rmat = new float[3, 3];
-        rmat[0, 0] = Mathf.Cos(angle); rmat[0, 1] = -Mathf.Sin(angle); rmat[0, 2] = 0;
-        rmat[1, 0] = Mathf.Sin(angle); rmat[1, 1] = Mathf.Cos(angle); rmat[1, 2] = 0;
-        rmat[2, 0] = 0; rmat[2, 1] = 0; rmat[2, 2] = 1;
+        rmat[0, 0] = Mathf.Cos(angle);  rmat[0, 1] = -Mathf.Sin(angle); rmat[0, 2] = 0;
+        rmat[1, 0] = Mathf.Sin(angle);  rmat[1, 1] = Mathf.Cos(angle);  rmat[1, 2] = 0;
+        rmat[2, 0] = 0;                 rmat[2, 1] = 0;                 rmat[2, 2] = 1;
 
         float[,] smat = new float[3, 3];
-        smat[0, 0] = sx; smat[0, 1] = 0; smat[0, 2] = 0;
-        smat[1, 0] = 0; smat[1, 1] = sy; smat[1, 2] = 0;
-        smat[2, 0] = 0; smat[2, 1] = 0; smat[2, 2] = 1;
+        smat[0, 0] = sx;    smat[0, 1] = 0;     smat[0, 2] = 0;
+        smat[1, 0] = 0;     smat[1, 1] = sy;    smat[1, 2] = 0;
+        smat[2, 0] = 0;     smat[2, 1] = 0;     smat[2, 2] = 1;
 
         float[,] finalmat = invert ? multiply(rmat, smat) : multiply(smat, rmat);
         for (int i = 0; i < vertices.Length; i++)
@@ -133,9 +133,9 @@ public class SquareObject : Transformations
     void RotateAroundPoint(float angle, float px, float py)
     {
         float[,] rmat = new float[3, 3];
-        rmat[0, 0] = Mathf.Cos(angle); rmat[0, 1] = -Mathf.Sin(angle); rmat[0, 2] = 0;
-        rmat[1, 0] = Mathf.Sin(angle); rmat[1, 1] = Mathf.Cos(angle); rmat[1, 2] = 0;
-        rmat[2, 0] = 0; rmat[2, 1] = 0; rmat[2, 2] = 1;
+        rmat[0, 0] = Mathf.Cos(angle);  rmat[0, 1] = -Mathf.Sin(angle); rmat[0, 2] = 0;
+        rmat[1, 0] = Mathf.Sin(angle);  rmat[1, 1] = Mathf.Cos(angle);  rmat[1, 2] = 0;
+        rmat[2, 0] = 0;                 rmat[2, 1] = 0;                 rmat[2, 2] = 1;
         float[,] t1mat = new float[3, 3];
         t1mat[0, 0] = 1; t1mat[0, 1] = 0; t1mat[0, 2] = -px;
         t1mat[1, 0] = 0; t1mat[1, 1] = 1; t1mat[1, 2] = -py;
