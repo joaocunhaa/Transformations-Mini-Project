@@ -5,12 +5,12 @@ using UnityEngine;
 public enum Transformation2D
 {
     None,
-    Translate2D,
+    Translation2D,
     Scaling2D,
     ScalingMatrix2D,
     Rotation2D,
     RotationMatrix2D,
-    Translate2DMatrixHM,
+    Translation2DMatrixHM,
     Scaling2DMatrixHM,
     Rotation2DMatrixHM
 }
@@ -55,7 +55,7 @@ public class TriangleMesh : Transformations
         float factor;
         switch (transformation2D)
         {
-            case Transformation2D.Translate2D:
+            case Transformation2D.Translation2D:
                 {
                     factor = decrease ? -1.0f : 1.0f;
                     Translate2D(factor * 2 * Time.deltaTime, 0);
@@ -85,7 +85,7 @@ public class TriangleMesh : Transformations
                     Rotate2DMat(factor * 120 * Mathf.Deg2Rad * Time.deltaTime);
                     break;
                 }
-            case Transformation2D.Translate2DMatrixHM:
+            case Transformation2D.Translation2DMatrixHM:
                 {
                     factor = decrease ? -1.0f : 1.0f;
                     Translate2DMatHM(0, factor * 2 * Time.deltaTime);
