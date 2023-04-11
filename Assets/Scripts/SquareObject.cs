@@ -25,8 +25,8 @@ public class SquareObject : Transformations
     // Vertices
     static private Coordinate p1 = new Coordinate(0, 0);
     static private Coordinate p2 = new Coordinate(10, 0);
-    static private Coordinate p3 = new Coordinate(10, 10);
-    static private Coordinate p4 = new Coordinate(0, 10);
+    static private Coordinate p3 = new Coordinate(0, 10);
+    static private Coordinate p4 = new Coordinate(10, 10);
 
     public CombinedTransformation combinedTransformation;
     public float angleInDegrees = 0f;
@@ -45,12 +45,12 @@ public class SquareObject : Transformations
         Reset();
 
         int[] triangles = new int[6];
-        triangles[0] = 0;
-        triangles[1] = 2;
-        triangles[2] = 1;
-        triangles[3] = 0;
-        triangles[4] = 3;
-        triangles[5] = 2;
+        triangles[0] = 0; // p1
+        triangles[1] = 3; // p4
+        triangles[2] = 1; // p2
+        triangles[3] = 0; // p1
+        triangles[4] = 2; // p3
+        triangles[5] = 3; // p4
         mesh.triangles = triangles;
 
         // Add a Mesh Renderer component to the Mesh object
