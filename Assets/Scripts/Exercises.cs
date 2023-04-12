@@ -31,15 +31,6 @@ public class Exercises : Transformations
         vertices = new Vector3[4];
         Reset();
 
-        int[] triangles = new int[6];
-        triangles[0] = 0; // p1
-        triangles[1] = 3; // p4
-        triangles[2] = 1; // p2
-        triangles[3] = 0; // p1
-        triangles[4] = 2; // p3
-        triangles[5] = 3; // p4
-        mesh.triangles = triangles;
-
         // Add a Mesh Renderer component to the Mesh object
         MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
@@ -82,6 +73,15 @@ public class Exercises : Transformations
         vertices[2] = new Vector3(p3.x, p3.y, 1);
         vertices[3] = new Vector3(p4.x, p4.y, 1);
         mesh.vertices = vertices;
+
+        int[] triangles = new int[6];
+        triangles[0] = 0; // p1
+        triangles[1] = 3; // p4
+        triangles[2] = 1; // p2
+        triangles[3] = 0; // p1
+        triangles[4] = 2; // p3
+        triangles[5] = 3; // p4
+        mesh.triangles = triangles;
     }
 
     #region Exercise Transformations
@@ -96,6 +96,7 @@ public class Exercises : Transformations
             vertices[i] = multiply(mat, vertices[i]);
         }
         mesh.vertices = vertices;
+        InvertTriangles();
     }
 
     void ReflectX()
@@ -108,6 +109,21 @@ public class Exercises : Transformations
             vertices[i] = multiply(mat, vertices[i]);
         }
         mesh.vertices = vertices;
+        InvertTriangles();
+    }
+
+    // This is necessary because, after the reflection, the camera will be facing the back side
+    // of the original square, which is not visible.
+    void InvertTriangles()
+    {
+        int[] triangles = new int[6];
+        triangles[0] = 1; // p2
+        triangles[1] = 3; // p4
+        triangles[2] = 0; // p1
+        triangles[3] = 3; // p4
+        triangles[4] = 2; // p3
+        triangles[5] = 0; // p1
+        mesh.triangles = triangles;
     }
 
 
