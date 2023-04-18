@@ -6,11 +6,15 @@ public enum ExerciseTransformation
 {
     None,
     ReflectionY,
-    ReflectionX
+    ReflectionX,
+    ShearingX,
+    ShearingY
 }
 
 public class Exercises : Transformations
 {
+    public float angleInDegrees = 0f;
+
     private Mesh mesh;
     private Vector3[] vertices;
 
@@ -59,6 +63,16 @@ public class Exercises : Transformations
                 case ExerciseTransformation.ReflectionX:
                     {
                         ReflectX();
+                        break;
+                    }
+                case ExerciseTransformation.ShearingX:
+                    {
+                        ShearingX(angleInDegrees * Mathf.Deg2Rad);
+                        break;
+                    }
+                case ExerciseTransformation.ShearingY:
+                    {
+                        ShearingY(angleInDegrees * Mathf.Deg2Rad);
                         break;
                     }
                 default: break;
@@ -110,6 +124,30 @@ public class Exercises : Transformations
         }
         mesh.vertices = vertices;
         InvertTriangles();
+    }
+
+    void ShearingX(float angle)
+    {
+        float[,] mat = new float[2, 2];
+        mat[0, 0] = 1; mat[0, 1] = Mathf.Tan(angle);
+        mat[1, 0] = 0;  mat[1, 1] = 1;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = multiply(mat, vertices[i]);
+        }
+        mesh.vertices = vertices;
+    }
+
+    void ShearingY(float angle)
+    {
+        float[,] mat = new float[2, 2];
+        mat[0, 0] = 1;                 mat[0, 1] = 0;
+        mat[1, 0] = Mathf.Tan(angle);   mat[1, 1] = 1;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = multiply(mat, vertices[i]);
+        }
+        mesh.vertices = vertices;
     }
 
     // This is necessary because, after the reflection, the camera will be facing the back side
