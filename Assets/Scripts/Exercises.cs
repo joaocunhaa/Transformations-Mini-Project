@@ -13,7 +13,7 @@ public enum ExerciseTransformation
 
 public class Exercises : Transformations
 {
-    public float angleInDegrees = 0f;
+    public float angleInDegrees;
 
     private Mesh mesh;
     private Vector3[] vertices;
@@ -29,6 +29,7 @@ public class Exercises : Transformations
 
     void Start()
     {
+        angleInDegrees = 45f;
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
         mesh.name = "MyMesh";
@@ -102,22 +103,22 @@ public class Exercises : Transformations
 
     void ReflectY()
     {
-
+        // Write your code here for exercise 1
     }
 
     void ReflectX()
     {
-
+        // Write your code here for exercise 1
     }
 
     void ShearingX(float angle)
     {
-
+        // Write your code here for exercise 2
     }
 
     void ShearingY(float angle)
     {
-
+        // Write your code here for exercise 2
     }
 
     // This is necessary because, after the reflection, the camera will be facing the back side
