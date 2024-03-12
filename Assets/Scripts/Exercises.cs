@@ -103,12 +103,28 @@ public class Exercises : Transformations
 
     void ReflectY()
     {
-        // Write your code here for exercise 1
+        float[,] mat = new float[2, 2];
+        mat[0, 0] = -1; mat[0, 1] = 0;
+        mat[1, 0] = 0; mat[1, 1] = 1;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = multiply(mat, vertices[i]);
+        }
+        mesh.vertices = vertices;
+        InvertTriangles();
     }
 
     void ReflectX()
     {
-        // Write your code here for exercise 1
+        float[,] mat = new float[2, 2];
+        mat[0, 0] = 1; mat[0, 1] = 0;
+        mat[1, 0] = 0; mat[1, 1] = -1;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = multiply(mat, vertices[i]);
+        }
+        mesh.vertices = vertices;
+        InvertTriangles();
     }
 
     void ShearingX(float angle)
