@@ -29,33 +29,64 @@ public class PyramidObject : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
         mesh.name = "MyMesh";
 
-        vertices = new Vector3[18];
+        vertices = new Vector3[36];
         //back triangle vertices
-        vertices[0] = new Vector3(-10, 0, -10);
-        vertices[1] = new Vector3(10, 0, -10);
-        vertices[2] = new Vector3(0, 10, 0);
+        vertices[0] = new Vector3(-10, 20, -10);
+        vertices[1] = new Vector3(10, 20, -10);
+        vertices[2] = new Vector3(0, 30, 0);
         //front triangle vertices
-        vertices[3] = new Vector3(-10, 0, 10);
-        vertices[4] = new Vector3(10, 0, 10);
-        vertices[5] = new Vector3(0, 10, 0);
+        vertices[3] = new Vector3(-10, 20, 10);
+        vertices[4] = new Vector3(10, 20, 10);
+        vertices[5] = new Vector3(0, 30, 0);
         //left triangle vertices
-        vertices[6] = new Vector3(-10, 0, 10);
-        vertices[7] = new Vector3(-10, 0, -10);
-        vertices[8] = new Vector3(0, 10, 0);
+        vertices[6] = new Vector3(-10, 20, 10);
+        vertices[7] = new Vector3(-10, 20, -10);
+        vertices[8] = new Vector3(0, 30, 0);
         //right triangle vertices
-        vertices[9] = new Vector3(10, 0, 10);
-        vertices[10] = new Vector3(10, 0, -10);
-        vertices[11] = new Vector3(0, 10, 0);
+        vertices[9] = new Vector3(10, 20, 10);
+        vertices[10] = new Vector3(10, 20, -10);
+        vertices[11] = new Vector3(0, 30, 0);
         //botton triangle 1 vertices
-        vertices[12] = new Vector3(-10, 0, -10);
-        vertices[13] = new Vector3(10, 0, -10);
-        vertices[14] = new Vector3(-10, 0, 10);
+        vertices[12] = new Vector3(-10, 20, -10);
+        vertices[13] = new Vector3(10, 20, -10);
+        vertices[14] = new Vector3(-10, 20, 10);
         //botton triangle 2 vertices
-        vertices[15] = new Vector3(10, 0, 10);
-        vertices[16] = new Vector3(10, 0, -10);
-        vertices[17] = new Vector3(-10, 0, 10);
+        vertices[15] = new Vector3(10, 20, 10);
+        vertices[16] = new Vector3(10, 20, -10);
+        vertices[17] = new Vector3(-10, 20, 10);
 
-        int[] triangles = new int[18];
+
+
+        //back triangle vertices
+        vertices[18] = new Vector3(-10, 20, -10);
+        vertices[19] = new Vector3(10, 20, -10);
+        vertices[20] = new Vector3(-10, 10, -10);
+        //front triangle vertices
+        vertices[21] = new Vector3(-10, 20, 10);
+        vertices[22] = new Vector3(10, 20, 10);
+        vertices[23] = new Vector3(0, 10, 0);
+        //left triangle vertices
+        vertices[24] = new Vector3(-10, 20, 10);
+        vertices[25] = new Vector3(-10, 20, -10);
+        vertices[26] = new Vector3(0, 10, 0);
+        //right triangle vertices
+        vertices[27] = new Vector3(10, 20, 10);
+        vertices[28] = new Vector3(10, 20, -10);
+        vertices[29] = new Vector3(0, 10, 0);
+
+
+        //botton triangle 1 vertices
+        vertices[30] = new Vector3(-10, 10, -10);
+        vertices[31] = new Vector3(10, 10, -10);
+        vertices[32] = new Vector3(-10, 10, 10);
+        //botton triangle 2 vertices
+        vertices[33] = new Vector3(10, 10, 10);
+        vertices[34] = new Vector3(10, 10, -10);
+        vertices[35] = new Vector3(-10, 10, 10);
+
+
+
+        int[] triangles = new int[36];
         //back triangle
         triangles[0] = 0;
         triangles[1] = 2;
@@ -81,7 +112,36 @@ public class PyramidObject : MonoBehaviour
         triangles[16] = 17;
         triangles[17] = 16;
 
-        normals = new Vector3[18];
+
+
+        //back triangle
+        triangles[18] = 18;
+        triangles[19] = 20;
+        triangles[20] = 19;
+        //front triangle
+        triangles[21] = 22;
+        triangles[22] = 23;
+        triangles[23] = 21;
+        //left triangle
+        triangles[24] = 24;
+        triangles[25] = 26;
+        triangles[26] = 25;
+        //right triangle
+        triangles[27] = 28;
+        triangles[28] = 29;
+        triangles[29] = 27;
+        //bottom triangle 1
+        triangles[30] = 31;
+        triangles[31] = 32;
+        triangles[32] = 30;
+        //bottom triangle 2
+        triangles[33] = 33;
+        triangles[34] = 35;
+        triangles[35] = 34;
+
+
+
+        normals = new Vector3[36];
 
         normals[0] = Vector3.back + Vector3.up;
         normals[1] = Vector3.back + Vector3.up;
@@ -106,6 +166,36 @@ public class PyramidObject : MonoBehaviour
         normals[15] = Vector3.down;
         normals[16] = Vector3.down;
         normals[17] = Vector3.down;
+
+
+
+
+        normals[18] = Vector3.back + Vector3.up;
+        normals[19] = Vector3.back + Vector3.up;
+        normals[20] = Vector3.back + Vector3.up;
+
+        normals[21] = Vector3.forward + Vector3.up;
+        normals[22] = Vector3.forward + Vector3.up;
+        normals[23] = Vector3.forward + Vector3.up;
+
+        normals[24] = Vector3.left + Vector3.up;
+        normals[25] = Vector3.left + Vector3.up;
+        normals[26] = Vector3.left + Vector3.up;
+
+        normals[27] = Vector3.right + Vector3.up;
+        normals[28] = Vector3.right + Vector3.up;
+        normals[29] = Vector3.right + Vector3.up;
+
+        normals[30] = Vector3.down;
+        normals[31] = Vector3.down;
+        normals[32] = Vector3.down;
+
+        normals[33] = Vector3.down;
+        normals[34] = Vector3.down;
+        normals[35] = Vector3.down;
+
+
+
 
         //Update mesh
         mesh.vertices = vertices;
