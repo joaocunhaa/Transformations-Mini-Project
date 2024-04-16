@@ -2,24 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Transformation3D
-{
-    None,
-    Translation3D,
-    Scaling3D,
-    RotationX3D,
-    RotationY3D,
-    RotationZ3D
-}
-
-public class PyramidObject : MonoBehaviour
+public class Object : MonoBehaviour
 {
     private Mesh mesh;
     private Vector3[] vertices;
     private Vector3[] normals;
-
-    public Transformation3D transformation3D;
-    public bool decrease = false;
 
     // Start is called before the first frame update
     void Start()
@@ -258,123 +245,6 @@ public class PyramidObject : MonoBehaviour
 
         // Assign the material to the Mesh object
         meshRenderer.material = material;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        float factor;
-        switch (transformation3D)
-        {
-            case Transformation3D.Translation3D:
-                {
-                    factor = decrease ? -1.0f : 1.0f;
-                    Translate3D(0, 0, factor * 2 * Time.deltaTime);
-                    break;
-                }
-            case Transformation3D.Scaling3D:
-                {
-                    factor = decrease ? 0.99f : 1.01f;
-                    Scale3D(factor, 1, 1);
-                    break;
-                }
-            case Transformation3D.RotationX3D:
-                {
-                    factor = decrease ? -1.0f : 1.0f;
-                    RotateX3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
-                    break;
-                }
-            case Transformation3D.RotationY3D:
-                {
-                    factor = decrease ? -1.0f : 1.0f;
-                    RotateY3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
-                    break;
-                }
-            case Transformation3D.RotationZ3D:
-                {
-                    factor = decrease ? -1.0f : 1.0f;
-                    RotateZ3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
-                    break;
-                }
-            default: break;
-        }
-
-    }
-
-    void Translate3D(float tx, float ty, float tz)
-    {
-        Matrix4x4 translation_matrix = new Matrix4x4();
-        translation_matrix.SetRow(0, new Vector4(1f, 0f, 0f, tx));
-        translation_matrix.SetRow(1, new Vector4(0f, 1f, 0f, ty));
-        translation_matrix.SetRow(2, new Vector4(0f, 0f, 1f, tz));
-        translation_matrix.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = translation_matrix.MultiplyPoint(vertices[i]);
-        }
-        mesh.vertices = vertices;
-    }
-
-    void Scale3D(float sx, float sy, float sz)
-    {
-        Matrix4x4 scale_matrix = new Matrix4x4();
-        scale_matrix.SetRow(0, new Vector4(sx, 0f, 0f, 0));
-        scale_matrix.SetRow(1, new Vector4(0f, sy, 0f, 0));
-        scale_matrix.SetRow(2, new Vector4(0f, 0f, sz, 0));
-        scale_matrix.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = scale_matrix.MultiplyPoint(vertices[i]);
-        }
-        mesh.vertices = vertices;
-    }
-
-    void RotateX3D(float angle)
-    {
-        Matrix4x4 rxmat = new Matrix4x4();
-        rxmat.SetRow(0, new Vector4(1f, 0f, 0f, 0f));
-        rxmat.SetRow(1, new Vector4(0f, Mathf.Cos(angle), -Mathf.Sin(angle), 0f));
-        rxmat.SetRow(2, new Vector4(0f, Mathf.Sin(angle), Mathf.Cos(angle), 0f));
-        rxmat.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = rxmat.MultiplyPoint(vertices[i]);
-            normals[i] = rxmat.MultiplyPoint(normals[i]);
-        }
-        mesh.vertices = vertices;
-        mesh.normals = normals;
-    }
-
-    void RotateY3D(float angle)
-    {
-        Matrix4x4 rymat = new Matrix4x4();
-        rymat.SetRow(0, new Vector4(Mathf.Cos(angle), 0f, Mathf.Sin(angle), 0f));
-        rymat.SetRow(1, new Vector4(0f, 1f, 0f, 0f));
-        rymat.SetRow(2, new Vector4(-Mathf.Sin(angle), 0f, Mathf.Cos(angle), 0f));
-        rymat.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = rymat.MultiplyPoint(vertices[i]);
-            normals[i] = rymat.MultiplyPoint(normals[i]);
-        }
-        mesh.vertices = vertices;
-        mesh.normals = normals;
-    }
-
-    void RotateZ3D(float angle)
-    {
-        Matrix4x4 rzmat = new Matrix4x4();
-        rzmat.SetRow(0, new Vector4(Mathf.Cos(angle), -Mathf.Sin(angle), 0f, 0f));
-        rzmat.SetRow(1, new Vector4(Mathf.Sin(angle), Mathf.Cos(angle), 0f, 0f));
-        rzmat.SetRow(2, new Vector4(0f, 0f, 1f, 0f));
-        rzmat.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = rzmat.MultiplyPoint(vertices[i]);
-            normals[i] = rzmat.MultiplyPoint(normals[i]);
-        }
-        mesh.vertices = vertices;
-        mesh.normals = normals;
     }
 
     // Visualise the normals
