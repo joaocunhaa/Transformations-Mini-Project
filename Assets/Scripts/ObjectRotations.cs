@@ -5,21 +5,19 @@ using UnityEngine;
 public enum Transformation3D
 {
     None,
-    Translation3D,
-    Scaling3D,
     RotationX3D,
     RotationY3D,
     RotationZ3D
 }
 
-public class PyramidObject : MonoBehaviour
+public class ObjectRotations : MonoBehaviour
 {
     private Mesh mesh;
     private Vector3[] vertices;
     private Vector3[] normals;
 
     public Transformation3D transformation3D;
-    public bool decrease = false;
+    public bool invert = false;
 
     // Start is called before the first frame update
     void Start()
@@ -266,67 +264,27 @@ public class PyramidObject : MonoBehaviour
         float factor;
         switch (transformation3D)
         {
-            case Transformation3D.Translation3D:
-                {
-                    factor = decrease ? -1.0f : 1.0f;
-                    Translate3D(0, 0, factor * 2 * Time.deltaTime);
-                    break;
-                }
-            case Transformation3D.Scaling3D:
-                {
-                    factor = decrease ? 0.99f : 1.01f;
-                    Scale3D(factor, 1, 1);
-                    break;
-                }
             case Transformation3D.RotationX3D:
                 {
-                    factor = decrease ? -1.0f : 1.0f;
+                    factor = invert ? -1.0f : 1.0f;
                     RotateX3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                     break;
                 }
             case Transformation3D.RotationY3D:
                 {
-                    factor = decrease ? -1.0f : 1.0f;
+                    factor = invert ? -1.0f : 1.0f;
                     RotateY3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                     break;
                 }
             case Transformation3D.RotationZ3D:
                 {
-                    factor = decrease ? -1.0f : 1.0f;
+                    factor = invert ? -1.0f : 1.0f;
                     RotateZ3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                     break;
                 }
             default: break;
         }
 
-    }
-
-    void Translate3D(float tx, float ty, float tz)
-    {
-        Matrix4x4 translation_matrix = new Matrix4x4();
-        translation_matrix.SetRow(0, new Vector4(1f, 0f, 0f, tx));
-        translation_matrix.SetRow(1, new Vector4(0f, 1f, 0f, ty));
-        translation_matrix.SetRow(2, new Vector4(0f, 0f, 1f, tz));
-        translation_matrix.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = translation_matrix.MultiplyPoint(vertices[i]);
-        }
-        mesh.vertices = vertices;
-    }
-
-    void Scale3D(float sx, float sy, float sz)
-    {
-        Matrix4x4 scale_matrix = new Matrix4x4();
-        scale_matrix.SetRow(0, new Vector4(sx, 0f, 0f, 0));
-        scale_matrix.SetRow(1, new Vector4(0f, sy, 0f, 0));
-        scale_matrix.SetRow(2, new Vector4(0f, 0f, sz, 0));
-        scale_matrix.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i] = scale_matrix.MultiplyPoint(vertices[i]);
-        }
-        mesh.vertices = vertices;
     }
 
     void RotateX3D(float angle)
