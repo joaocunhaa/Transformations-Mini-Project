@@ -265,39 +265,39 @@ public class ObjectRotations : MonoBehaviour
         switch (transformation3D)
         {
             case Transformation3D.RotationX3D:
-                {
-                    factor = invert ? -1.0f : 1.0f;
-                    RotateX3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
-                    break;
-                }
+                factor = invert ? -1.0f : 1.0f;
+                RotateX3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                break;
+
             case Transformation3D.RotationY3D:
-                {
-                    factor = invert ? -1.0f : 1.0f;
-                    RotateY3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
-                    break;
-                }
+                factor = invert ? -1.0f : 1.0f;
+                RotateY3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                break;
+
             case Transformation3D.RotationZ3D:
-                {
-                    factor = invert ? -1.0f : 1.0f;
-                    RotateZ3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
-                    break;
-                }
+                factor = invert ? -1.0f : 1.0f;
+                RotateZ3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                break;
+
             default: break;
         }
-
     }
 
     void RotateX3D(float angle)
     {
-        Matrix4x4 rxmat = new Matrix4x4();
-        rxmat.SetRow(0, new Vector4(1f, 0f, 0f, 0f));
-        rxmat.SetRow(1, new Vector4(0f, Mathf.Cos(angle), -Mathf.Sin(angle), 0f));
-        rxmat.SetRow(2, new Vector4(0f, Mathf.Sin(angle), Mathf.Cos(angle), 0f));
-        rxmat.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
+        float cosA = Mathf.Cos(angle);
+        float sinA = Mathf.Sin(angle);
         for (int i = 0; i < vertices.Length; i++)
         {
-            vertices[i] = rxmat.MultiplyPoint(vertices[i]);
-            normals[i] = rxmat.MultiplyPoint(normals[i]);
+            float y = vertices[i].y;
+            float z = vertices[i].z;
+            vertices[i].y = y * cosA - z * sinA;
+            vertices[i].z = y * sinA + z * cosA;
+
+            y = normals[i].y;
+            z = normals[i].z;
+            normals[i].y = y * cosA - z * sinA;
+            normals[i].z = y * sinA + z * cosA;
         }
         mesh.vertices = vertices;
         mesh.normals = normals;
@@ -305,15 +305,19 @@ public class ObjectRotations : MonoBehaviour
 
     void RotateY3D(float angle)
     {
-        Matrix4x4 rymat = new Matrix4x4();
-        rymat.SetRow(0, new Vector4(Mathf.Cos(angle), 0f, Mathf.Sin(angle), 0f));
-        rymat.SetRow(1, new Vector4(0f, 1f, 0f, 0f));
-        rymat.SetRow(2, new Vector4(-Mathf.Sin(angle), 0f, Mathf.Cos(angle), 0f));
-        rymat.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
+        float cosA = Mathf.Cos(angle);
+        float sinA = Mathf.Sin(angle);
         for (int i = 0; i < vertices.Length; i++)
         {
-            vertices[i] = rymat.MultiplyPoint(vertices[i]);
-            normals[i] = rymat.MultiplyPoint(normals[i]);
+            float x = vertices[i].x;
+            float z = vertices[i].z;
+            vertices[i].x = x * cosA + z * sinA;
+            vertices[i].z = -x * sinA + z * cosA;
+
+            x = normals[i].x;
+            z = normals[i].z;
+            normals[i].x = x * cosA + z * sinA;
+            normals[i].z = -x * sinA + z * cosA;
         }
         mesh.vertices = vertices;
         mesh.normals = normals;
@@ -321,15 +325,19 @@ public class ObjectRotations : MonoBehaviour
 
     void RotateZ3D(float angle)
     {
-        Matrix4x4 rzmat = new Matrix4x4();
-        rzmat.SetRow(0, new Vector4(Mathf.Cos(angle), -Mathf.Sin(angle), 0f, 0f));
-        rzmat.SetRow(1, new Vector4(Mathf.Sin(angle), Mathf.Cos(angle), 0f, 0f));
-        rzmat.SetRow(2, new Vector4(0f, 0f, 1f, 0f));
-        rzmat.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
+        float cosA = Mathf.Cos(angle);
+        float sinA = Mathf.Sin(angle);
         for (int i = 0; i < vertices.Length; i++)
         {
-            vertices[i] = rzmat.MultiplyPoint(vertices[i]);
-            normals[i] = rzmat.MultiplyPoint(normals[i]);
+            float x = vertices[i].x;
+            float y = vertices[i].y;
+            vertices[i].x = x * cosA - y * sinA;
+            vertices[i].y = x * sinA + y * cosA;
+
+            x = normals[i].x;
+            y = normals[i].y;
+            normals[i].x = x * cosA - y * sinA;
+            normals[i].y = x * sinA + y * cosA;
         }
         mesh.vertices = vertices;
         mesh.normals = normals;
