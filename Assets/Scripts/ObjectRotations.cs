@@ -5,9 +5,12 @@ using UnityEngine;
 public enum Transformation3D
 {
     None,
-    RotationX3D,
-    RotationY3D,
-    RotationZ3D
+    RotationX3DEuler,
+    RotationY3DEuler,
+    RotationZ3DEuler,
+    RotationX3DQuaternions,
+    RotationY3DQuaternions,
+    RotationZ3DQuaternions
 }
 
 public class ObjectRotations : MonoBehaviour
@@ -264,19 +267,34 @@ public class ObjectRotations : MonoBehaviour
         float factor;
         switch (transformation3D)
         {
-            case Transformation3D.RotationX3D:
+            case Transformation3D.RotationX3DEuler:
                 factor = invert ? -1.0f : 1.0f;
                 RotateX3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                 break;
 
-            case Transformation3D.RotationY3D:
+            case Transformation3D.RotationY3DEuler:
                 factor = invert ? -1.0f : 1.0f;
                 RotateY3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                 break;
 
-            case Transformation3D.RotationZ3D:
+            case Transformation3D.RotationZ3DEuler:
                 factor = invert ? -1.0f : 1.0f;
                 RotateZ3D(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                break;
+
+            case Transformation3D.RotationX3DQuaternions:
+                factor = invert ? -1.0f : 1.0f;
+                RotateX3DQuaternions(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                break;
+
+            case Transformation3D.RotationY3DQuaternions:
+                factor = invert ? -1.0f : 1.0f;
+                RotateY3DQuaternions(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                break;
+
+            case Transformation3D.RotationZ3DQuaternions:
+                factor = invert ? -1.0f : 1.0f;
+                RotateZ3DQuaternions(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                 break;
 
             default: break;
@@ -338,6 +356,44 @@ public class ObjectRotations : MonoBehaviour
             y = normals[i].y;
             normals[i].x = x * cosA - y * sinA;
             normals[i].y = x * sinA + y * cosA;
+        }
+        mesh.vertices = vertices;
+        mesh.normals = normals;
+    }
+
+    void RotateX3DQuaternions(float angle)
+    {
+        Matrix4x4 rxMat = QuaternionToMatrix(Quaternion.Euler(angle, 0, 0));
+        ApplyRotation(rxMat);
+    }
+
+    void RotateY3DQuaternions(float angle)
+    {
+        Matrix4x4 ryMat = QuaternionToMatrix(Quaternion.Euler(0, angle, 0));
+        ApplyRotation(ryMat);
+    }
+
+    void RotateZ3DQuaternions(float angle)
+    {
+        Matrix4x4 rzMat = QuaternionToMatrix(Quaternion.Euler(0, 0, angle));
+        ApplyRotation(rzMat);
+    }
+
+    Matrix4x4 QuaternionToMatrix(Quaternion q)
+    {
+        Matrix4x4 matrix = Matrix4x4.identity;
+        matrix.SetColumn(0, new Vector4(1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y - q.z * q.w), 2 * (q.x * q.z + q.y * q.w), 0));
+        matrix.SetColumn(1, new Vector4(2 * (q.x * q.y + q.z * q.w), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z - q.x * q.w), 0));
+        matrix.SetColumn(2, new Vector4(2 * (q.x * q.z - q.y * q.w), 2 * (q.y * q.z + q.x * q.w), 1 - 2 * (q.x * q.x + q.y * q.y), 0));
+        return matrix;
+    }
+
+    void ApplyRotation(Matrix4x4 rotationMatrix)
+    {
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = rotationMatrix.MultiplyPoint(vertices[i]);
+            normals[i] = rotationMatrix.MultiplyVector(normals[i]);
         }
         mesh.vertices = vertices;
         mesh.normals = normals;
