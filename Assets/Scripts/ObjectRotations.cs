@@ -284,17 +284,17 @@ public class ObjectRotations : MonoBehaviour
 
             case Transformation3D.RotationX3DQuaternions:
                 factor = invert ? -1.0f : 1.0f;
-                RotateX3DQuaternions(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                Rotate3DQuaternions(new Vector3(1, 0, 0), factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                 break;
 
             case Transformation3D.RotationY3DQuaternions:
                 factor = invert ? -1.0f : 1.0f;
-                RotateY3DQuaternions(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                Rotate3DQuaternions(new Vector3(0, 1, 0), factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                 break;
 
             case Transformation3D.RotationZ3DQuaternions:
                 factor = invert ? -1.0f : 1.0f;
-                RotateZ3DQuaternions(factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
+                Rotate3DQuaternions(new Vector3(0, 0, 1), factor * 20 * Mathf.Deg2Rad * Time.deltaTime);
                 break;
 
             default: break;
@@ -361,42 +361,53 @@ public class ObjectRotations : MonoBehaviour
         mesh.normals = normals;
     }
 
-    void RotateX3DQuaternions(float angle)
+    void Rotate3DQuaternions(Vector3 axis, float angle)
     {
-        Matrix4x4 rxMat = QuaternionToMatrix(Quaternion.Euler(angle, 0, 0));
-        ApplyRotation(rxMat);
-    }
+        Quaternion q = AngleAxisToQuaternion(angle, axis);
+        Matrix4x4 rotationMatrix = QuaternionToMatrix(q);
 
-    void RotateY3DQuaternions(float angle)
-    {
-        Matrix4x4 ryMat = QuaternionToMatrix(Quaternion.Euler(0, angle, 0));
-        ApplyRotation(ryMat);
-    }
-
-    void RotateZ3DQuaternions(float angle)
-    {
-        Matrix4x4 rzMat = QuaternionToMatrix(Quaternion.Euler(0, 0, angle));
-        ApplyRotation(rzMat);
-    }
-
-    Matrix4x4 QuaternionToMatrix(Quaternion q)
-    {
-        Matrix4x4 matrix = Matrix4x4.identity;
-        matrix.SetColumn(0, new Vector4(1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y - q.z * q.w), 2 * (q.x * q.z + q.y * q.w), 0));
-        matrix.SetColumn(1, new Vector4(2 * (q.x * q.y + q.z * q.w), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z - q.x * q.w), 0));
-        matrix.SetColumn(2, new Vector4(2 * (q.x * q.z - q.y * q.w), 2 * (q.y * q.z + q.x * q.w), 1 - 2 * (q.x * q.x + q.y * q.y), 0));
-        return matrix;
-    }
-
-    void ApplyRotation(Matrix4x4 rotationMatrix)
-    {
         for (int i = 0; i < vertices.Length; i++)
         {
             vertices[i] = rotationMatrix.MultiplyPoint(vertices[i]);
             normals[i] = rotationMatrix.MultiplyVector(normals[i]);
         }
+
         mesh.vertices = vertices;
         mesh.normals = normals;
+    }
+
+    Quaternion AngleAxisToQuaternion(float angle, Vector3 axis)
+    {
+        axis.Normalize();
+        float sinHalfAngle = Mathf.Sin(angle / 2);
+        float cosHalfAngle = Mathf.Cos(angle / 2);
+
+        float x = axis.x * sinHalfAngle;
+        float y = axis.y * sinHalfAngle;
+        float z = axis.z * sinHalfAngle;
+        float w = cosHalfAngle;
+
+        return new Quaternion(x, y, z, w);
+    }
+
+    Matrix4x4 QuaternionToMatrix(Quaternion q)
+    {
+        float xx = q.x * q.x;
+        float yy = q.y * q.y;
+        float zz = q.z * q.z;
+        float xy = q.x * q.y;
+        float xz = q.x * q.z;
+        float yz = q.y * q.z;
+        float wx = q.w * q.x;
+        float wy = q.w * q.y;
+        float wz = q.w * q.z;
+
+        Matrix4x4 m = new Matrix4x4();
+        m.SetRow(0, new Vector4(1.0f - 2.0f * (yy + zz), 2.0f * (xy - wz), 2.0f * (xz + wy), 0.0f));
+        m.SetRow(1, new Vector4(2.0f * (xy + wz), 1.0f - 2.0f * (xx + zz), 2.0f * (yz - wx), 0.0f));
+        m.SetRow(2, new Vector4(2.0f * (xz - wy), 2.0f * (yz + wx), 1.0f - 2.0f * (xx + yy), 0.0f));
+        m.SetRow(3, new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+        return m;
     }
 
     // Visualise the normals
